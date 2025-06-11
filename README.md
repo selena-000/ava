@@ -18,7 +18,7 @@ This is the baseline code for [**The ACM Multimedia 2025 Grand Challenge of Avat
 ```
 ## Pretrained Model Checkpoints Download
 - ImageBind: The pre-trained checkpoint can be downloaded from [ImageBind](https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth) with version huge. Afterward, put the imagebind_huge.pth file at [ckpt/pretrained_ckpt/imagebind_ckpt/huge].
-- Vicuna: Prepare the weight files as instructed in the [prepare_vicuna.md](ckpt/pretrained_ckpt/prepare_vicuna.md). Then put the pre-trained model at [.kpt/pretrained_ckpt/vicuna_ckpt/7b_v0].
+- Vicuna: Prepare the weight files as instructed in the [prepare_vicuna.md](ckpt/pretrained_ckpt/prepare_vicuna.md). Then put the pre-trained model at [ckpt/pretrained_ckpt/vicuna_ckpt/7b_v0].
 (Alternatively, other backbone models may also be selected.)
 
 ## Download the Training Data
