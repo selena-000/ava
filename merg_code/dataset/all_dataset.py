@@ -21,7 +21,7 @@ class TextCleaner:
     # IPA Phonemizer: https://github.com/bootphon/phonemizer
     def __init__(self, dummy=None):
         _pad = "$"
-        _punctuation = ';:,.!?¡¿—…"«»“” '
+        _punctuation = ';:,.!?¡¿—…"«»"" '
         _letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
         _letters_ipa = "ɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞↓↑→↗↘'̩'ᵻ"
         # Export all symbols:
@@ -164,6 +164,13 @@ class multimodal_empathetic_dialogue(Dataset):
         with open(os.path.join(args['data_path'], args['mode']+'.json'), 'r', encoding='utf-8') as f:
             self.raw_data = json.load(f)
     
+        # ========== 添加的代码开始 ==========
+        # 获取音频路径，用于检查文件是否存在
+        audio_path = args.get('audio_path', 'merg_data/train/audio')
+        skipped_count = 0
+        total_count = len(self.raw_data)
+        # ========== 添加的代码结束 ==========
+        
         for item in tqdm(self.raw_data, total=len(self.raw_data)):
             turn = item['turns'][-1]
             conversation_id = item['conversation_id']
@@ -171,6 +178,25 @@ class multimodal_empathetic_dialogue(Dataset):
             listener_profile = item['listener_profile']
             topic = item['topic']
            
+            # ========== 添加的代码开始 ==========
+            # 检查这个对话的音频文件是否存在
+            dia_id = transform_conv_id(conversation_id)
+            length = len(turn['dialogue_history'])
+            
+            # 检查所有需要的音频文件
+            skip_this_item = False
+            for i in range(1, length + 2):  # +2 包括response
+                audio_filename = f'dia{dia_id}utt{i}.wav'
+                audio_filepath = os.path.join(audio_path, audio_filename)
+                if not os.path.exists(audio_filepath):
+                    skip_this_item = True
+                    break
+            
+            if skip_this_item:
+                skipped_count += 1
+                continue  # 跳过这个item，不添加到self.data
+            # ========== 添加的代码结束 ==========
+            
             self.data.append({
                 'conversation_id': conversation_id,
                 'turn': turn,
@@ -179,6 +205,11 @@ class multimodal_empathetic_dialogue(Dataset):
                 'topic': topic,
             })
         
+        # ========== 添加的代码开始 ==========
+        print(f"\n[Dataset Info] Total items: {total_count}, Skipped: {skipped_count}, Loaded: {len(self.data)}")
+        if len(self.data) == 0:
+            raise ValueError("No valid data! All audio files are missing!")
+        # ========== 添加的代码结束 ==========
 
     def __len__(self):
         return len(self.data)
@@ -249,4 +280,3 @@ class multimodal_empathetic_dialogue(Dataset):
                 'response_timbre': response_timbre,
                 'response_profile': response_profile
                 }
-    
