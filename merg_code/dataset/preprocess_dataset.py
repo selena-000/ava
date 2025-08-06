@@ -27,8 +27,9 @@ def standardized_rename(folder_path):
             print(f'Renamed: {filename} -> {new_filename}')
 
 if __name__ == '__main__':
-    original_audio_path = 'merg_data/video'
-    standardized_rename(original_audio_path)
+    standardized_rename('merg_data/audio')
+    standardized_rename('merg_data/video')
+
 
 
   
