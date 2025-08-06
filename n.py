@@ -165,8 +165,8 @@ def main():
     
     # 训练集
     train_json = "merg_data/train.json"
-    train_video_dir = "merg_data/train_video"
-    train_audio_dir = "merg_data/train_audio"
+    train_video_dir = "merg_data/train/video"
+    train_audio_dir = "merg_data/train/audio"
     train_output_json = "merg_data/train_filtered.json"
     
     # 测试集
