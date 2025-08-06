@@ -14,7 +14,7 @@ def parser_args():
     parser.add_argument('--video_path', type=str, default='merg_data/train/video')
     parser.add_argument('--local_rank', default=0, type=int)
     parser.add_argument('--save_path', type=str, default='ckpt/merg_ckpt/')
-    parser.add_argument('--log_path', type=str, default='/root/tf-logs/')
+    parser.add_argument('--log_path', type=str, default='logs/')
     parser.add_argument('--assets_path', type=str, default='./assets/')
     parser.add_argument('--max_length', type=int, default=1024)  
 
