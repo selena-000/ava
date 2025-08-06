@@ -43,8 +43,6 @@ class TextCleaner:
 
 class multimodal_empathetic_dialogue(Dataset):
     def __init__(self, args):
-        self.audio_path = args['audio_path']
-        self.video_path = args['video_path']
         super(multimodal_empathetic_dialogue, self).__init__()
         self.args = args
         self.age_projection = {
@@ -165,11 +163,6 @@ class multimodal_empathetic_dialogue(Dataset):
         self.data = []
         with open(os.path.join(args['data_path'], args['mode']+'.json'), 'r', encoding='utf-8') as f:
             self.raw_data = json.load(f)
-        def file_exists(dia_id, length):
-            response_utt_name = f'dia{dia_id}utt{length+1}'
-            audio_file = os.path.join(self.audio_path, response_utt_name + ".pt")
-            video_file = os.path.join(self.video_path, response_utt_name + ".pt")
-            return os.path.exists(audio_file) and os.path.exists(video_file)
     
         for item in tqdm(self.raw_data, total=len(self.raw_data)):
             turn = item['turns'][-1]
@@ -177,10 +170,6 @@ class multimodal_empathetic_dialogue(Dataset):
             speaker_profile = item['speaker_profile']
             listener_profile = item['listener_profile']
             topic = item['topic']
-            dia_id = transform_conv_id(conversation_id)
-            length = len(turn['dialogue_history'])
-            if not file_exists(dia_id, length):
-                continue
             self.data.append({
                 'conversation_id': conversation_id,
                 'turn': turn,
@@ -260,4 +249,3 @@ class multimodal_empathetic_dialogue(Dataset):
                 'response_profile': response_profile
                 }
     
-
