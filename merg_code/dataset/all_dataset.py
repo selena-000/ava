@@ -170,13 +170,7 @@ class multimodal_empathetic_dialogue(Dataset):
             speaker_profile = item['speaker_profile']
             listener_profile = item['listener_profile']
             topic = item['topic']
-            dia_id = transform_conv_id(conversation_id)
-            length = len(turn['dialogue_history'])
-            response_utt_name = f'dia{dia_id}utt{length+1}'
-            audio_path = os.path.join(args['audio_path'], f"{response_utt_name}.wav")
-            video_path = os.path.join(args['video_path'], f"{response_utt_name}.mp4")
-            if not os.path.exists(audio_path) or not os.path.exists(video_path):
-                continue
+           
             self.data.append({
                 'conversation_id': conversation_id,
                 'turn': turn,
